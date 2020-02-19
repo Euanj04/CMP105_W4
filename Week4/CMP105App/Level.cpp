@@ -7,11 +7,25 @@ Level::Level(sf::RenderWindow* hwnd, Input* in)
 
 	// initialise game objects
 	texture.loadFromFile("gfx/Mushroom.png");
+	goomTexture.loadFromFile("gfx/Goomba.png");
+	koopTexture.loadFromFile("gfx/Koopa.png");
 
-	testSprite.setTexture(&texture);
-	testSprite.setSize(sf::Vector2f(100, 100));
-	testSprite.setPosition(100, 100);
+	player.setInput(input);
+	player.setTexture(&texture);
+	player.setSize(sf::Vector2f(100, 100));
+	player.setPosition(100, 100);
 
+	goomba.setWindow(window);
+	goomba.setTexture(&goomTexture);
+	goomba.setSize(sf::Vector2f(100, 100));
+	goomba.setPosition(500, 500);
+	goomba.setOrigin(goomba.getSize().x / 2, goomba.getSize().y / 2);
+
+	koopa.setWindow(window);
+	koopa.setTexture(&koopTexture);
+	koopa.setSize(sf::Vector2f(100, 150));
+	koopa.setPosition(300, 100);
+	koopa.setOrigin(koopa.getSize().x / 2, koopa.getSize().y / 2);
 }
 
 Level::~Level()
@@ -28,12 +42,17 @@ void Level::handleInput(float dt)
 		window->close();
 	}
 
+	player.handleInput(dt);
 }
 
 // Update game objects
 void Level::update(float dt)
 {
-	
+	player.update(dt);
+
+	goomba.update(dt);
+
+	koopa.update(dt);
 }
 
 // Render level
@@ -41,7 +60,11 @@ void Level::render()
 {
 	beginDraw();
 
-	window->draw(testSprite);
+	window->draw(player);
+
+	window->draw(goomba);
+
+	window->draw(koopa);
 
 	endDraw();
 }
